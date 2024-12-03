@@ -2,7 +2,4 @@ all:
 	python3.11 -m venv venv && \
 	source venv/bin/activate && \
 	pip install -r requirements.txt && \
-	flask run
-
-env:
-	set FLASK_APP=app.py
+	gunicorn --workers=4 --bind=127.0.0.1:5000 app:app
