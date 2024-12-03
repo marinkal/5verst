@@ -1,10 +1,8 @@
-from flask import Flask
+from flask import Flask, render_template
 from bs4 import BeautifulSoup as BS
-from helpers import generate_sequence, get_sorted_rows
+from helpers import generate_sequence, get_sorted_rows, validate
 from script import get_all_runners
 app = Flask(__name__)
-
-
 
 
 @app.route('/')
@@ -25,6 +23,10 @@ def index():
 @app.route('/<string:_date>/<string:category>')
 def route_main(_date, category):
     category = category.upper()
+    success, errors = validate(category, _date)
+    if not success:
+        return render_template('error.html', errors=errors)
+
     all_runners = get_all_runners(_date, category)
     raiting = get_sorted_rows(all_runners)
     index = 1
@@ -36,4 +38,4 @@ def route_main(_date, category):
         index += 1
         result += row
 
-    return result+'<Table>'
+    return result+'</Table>'
