@@ -1,5 +1,5 @@
 from flask import Flask
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as BS
 from helpers import generate_sequence, get_sorted_rows
 from script import get_all_runners
 app = Flask(__name__)
@@ -30,7 +30,7 @@ def route_main(_date, category):
     index = 1
     result = '<Table border=1>'
     for person in raiting:
-        placeTag = BeautifulSoup(f'<div>{index}</div>', features="html.parser" )
+        placeTag = BS(f'<div>{index}</div>', features='html.parser')
         person['row'].select_one('div').replaceWith(placeTag)
         row = str(person['row'])
         index += 1
